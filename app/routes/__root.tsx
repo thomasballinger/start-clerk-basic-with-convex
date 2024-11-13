@@ -6,7 +6,6 @@ import {
   createRootRouteWithContext,
 } from '@tanstack/react-router'
 import {
-  ClerkProvider,
   SignInButton,
   SignedIn,
   SignedOut,
@@ -77,13 +76,11 @@ export const Route = createRootRouteWithContext<{
   beforeLoad: async ({ context }) => {
     const { user, token } = await fetchClerkAuth()
     const isServer = typeof window === 'undefined'
-    console.log('setting setAuth cb in beforeLoad')
     if (isServer) {
-      console.log('setting auth token on server')
-      console.log(token)
+      console.log('setting auth token on server in beforeLoad')
       context.convexClient.serverHttpClient!.setAuth(token!)
     } else {
-      console.log('setting auth callback on client')
+      console.log('setting auth callback on client in beforeLoad')
       context.convexClient.convexClient.setAuth(async () => {
         console.log('running setAuth callback')
         return token
