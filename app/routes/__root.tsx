@@ -3,7 +3,7 @@ import {
   Link,
   Outlet,
   ScrollRestoration,
-  createRootRoute,
+  createRootRouteWithContext,
 } from '@tanstack/react-router'
 import {
   ClerkProvider,
@@ -21,6 +21,7 @@ import {
   Scripts,
   createServerFn,
 } from '@tanstack/start'
+import { QueryClient } from '@tanstack/react-query'
 import * as React from 'react'
 import { getAuth } from '@clerk/tanstack-start/server'
 import { DefaultCatchBoundary } from '~/components/DefaultCatchBoundary.js'
@@ -35,7 +36,9 @@ const fetchClerkAuth = createServerFn('GET', async (_, ctx) => {
   }
 })
 
-export const Route = createRootRoute({
+export const Route = createRootRouteWithContext<{
+  queryClient: QueryClient
+}>()({
   meta: () => [
     {
       charSet: 'utf-8',
@@ -87,11 +90,9 @@ export const Route = createRootRoute({
 
 function RootComponent() {
   return (
-    <ClerkProvider>
       <RootDocument>
         <Outlet />
       </RootDocument>
-    </ClerkProvider>
   )
 }
 
